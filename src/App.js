@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
   CssBaseline,
   Paper,
@@ -7,8 +6,10 @@ import {
   createTheme,
   responsiveFontSizes,
 } from '@mui/material';
-import { customizations } from './theme';
 import styled from '@emotion/styled';
+import './App.css';
+import Layout from './components/layout';
+import { customizations } from './theme';
 
 function App() {
   let theme = createTheme(customizations());
@@ -24,9 +25,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <StyledPaper elevation={0}>
-        <div className='App'>
-          <h1>Hello !</h1>
-        </div>
+        <Layout />
       </StyledPaper>
     </ThemeProvider>
   );
