@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import styled from '@emotion/styled';
 import './App.css';
-import Layout from './components/layout';
 import { customizations } from './theme';
+import GameRoutes from './Routes/Routes';
 
 function App() {
   let theme = createTheme(customizations());
@@ -25,7 +25,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <StyledPaper elevation={0}>
-        <Layout />
+        <GameRoutes />
       </StyledPaper>
     </ThemeProvider>
   );

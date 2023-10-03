@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from '../pages/home';
-import Chess from '../pages/chess';
+import Gameoptions from '../pages/gameOptions';
 
-const Layout = () => {
+const GameRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Home />} />
-      <Route path='/play-game' element={<Chess />} />
+      <Route path='/play' element={<Gameoptions />} />
     </Routes>
   );
 };
 
-export default Layout;
+export default GameRoutes;
