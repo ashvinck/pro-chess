@@ -14,10 +14,10 @@ const Options = [
     to: '/play/computer',
   },
   {
-    title: 'Play with Friends',
+    title: 'Play with a Friend',
     subtitle: 'Invite a friend and play with them.',
     icon: PlayImg,
-    to: 'play/friend',
+    to: '/play/friend',
   },
 ];
 

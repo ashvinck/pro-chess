@@ -7,6 +7,8 @@ export const customizations = () => ({
     },
     secondary: {
       main: '#c8b5a7',
+      light: '#d3c3b8',
+      dark: '#8c7e74',
     },
   },
   typography: {
