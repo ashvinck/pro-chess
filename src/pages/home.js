@@ -65,7 +65,8 @@ const Home = () => {
               TAKE YOUR CHESS GAME TO THE NEXT LEVEL
             </StyledHeading>
             <StyledTypography variant='subtitle2'>
-              Connect with your friends and improve your skills to master chess
+              Enhance Your Chess Mastery: Challenge Stockfish, the Renowned
+              Chess Engine!
             </StyledTypography>
             <Hidden mdDown>
               <Link to='/play'>
