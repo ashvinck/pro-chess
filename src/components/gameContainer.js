@@ -5,6 +5,9 @@ import Header from './header';
 
 const PageContainer = styled(Box)(({ theme }) => ({
   height: '100vh',
+  [theme.breakpoints.up('md')]: {
+    height: '100%',
+  },
   width: '100%',
   background: theme.palette.primary.main,
   color: theme.palette.secondary.main,

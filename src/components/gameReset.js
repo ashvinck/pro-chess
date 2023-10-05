@@ -1,9 +1,13 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
+import ReplayIcon from '@mui/icons-material/Replay';
+import UndoIcon from '@mui/icons-material/Undo';
+import Tooltip from '@mui/material/Tooltip';
 
-// Styled Button
-const StyledButton = styled(Button)(({ theme }) => ({
+// Styled IconButton
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
   fontFamily: 'Poppins, sans-serif',
   fontWeight: 'bold',
   margin: theme.spacing(2),
@@ -16,14 +20,18 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 const GameReset = ({ resetGame, undoMove }) => {
   return (
-    <>
-      <StyledButton variant='contained' onClick={resetGame}>
-        Reset
-      </StyledButton>
-      <StyledButton variant='contained' onClick={undoMove}>
-        Undo
-      </StyledButton>
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Tooltip title='Reset'>
+        <StyledIconButton variant='contained' onClick={resetGame}>
+          <ReplayIcon />
+        </StyledIconButton>
+      </Tooltip>
+      <Tooltip title='Undo'>
+        <StyledIconButton variant='contained' onClick={undoMove}>
+          <UndoIcon />
+        </StyledIconButton>
+      </Tooltip>
+    </Box>
   );
 };
 

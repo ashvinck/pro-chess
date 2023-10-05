@@ -35,7 +35,7 @@ const GameLevel = ({ gameHardnessLevel, setGameHardnessLevel }) => {
           style={{
             fontFamily: 'Poppins, sans-serif',
             fontWeight: 'bold',
-            marginLeft: theme.spacing(2),
+            margin: theme.spacing(2),
             backgroundColor:
               depth === gameHardnessLevel
                 ? theme.palette.secondary.light

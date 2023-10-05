@@ -14,4 +14,16 @@ export const customizations = () => ({
   typography: {
     fontFamily: 'Poppins, Dela Gothic One, cursive, sans-serif',
   },
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        color: 'secondary',
+        inputProps: {
+          style: {
+            color: '#fff', // This sets the text field font color
+          },
+        },
+      },
+    },
+  },
 });
