@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Header from './header';
-import BackgroundImg from '../assets/chessbg.png';
+import BackgroundImg from '../assets/chessbg.webp';
 import Footer from './footer';
 
 // Container (background image)

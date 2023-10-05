@@ -8,7 +8,7 @@ import { selectuser } from '../../features/gameData/gameDataSlice';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000',
+    baseUrl: 'https://pro-chess-backend.vercel.app',
     prepareHeaders: (headers, { getState }) => {
       const user = selectuser(getState());
       if (user) {
