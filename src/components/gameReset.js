@@ -21,14 +21,14 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 const GameReset = ({ resetGame, undoMove }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-      <Tooltip title='Reset'>
-        <StyledIconButton variant='contained' onClick={resetGame}>
-          <ReplayIcon />
-        </StyledIconButton>
-      </Tooltip>
       <Tooltip title='Undo'>
         <StyledIconButton variant='contained' onClick={undoMove}>
           <UndoIcon />
+        </StyledIconButton>
+      </Tooltip>
+      <Tooltip title='Reset'>
+        <StyledIconButton variant='contained' onClick={resetGame}>
+          <ReplayIcon />
         </StyledIconButton>
       </Tooltip>
     </Box>

@@ -170,7 +170,10 @@ const SinglePlayerGame = () => {
   // update gamePosition when Redux updates restoreFen
   useEffect(() => {
     if (restoreFen) {
+      // console.log('Restored FEN:', restoreFen);
+      game.load(restoreFen);
       setGamePosition(restoreFen);
+      // console.log('Current FEN:', game.fen());
     }
   }, [restoreFen]);
 
