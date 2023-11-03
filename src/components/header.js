@@ -57,6 +57,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 // For logout Container
 const StyledLogoutPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
+  borderRadius: '10px',
   backgroundColor: theme.palette.primary.main,
   display: 'flex',
   alignItems: 'center',
@@ -91,8 +92,8 @@ const Header = () => {
 
   // Logout handler function
   const handleLogout = () => {
-    dispatch(logout());
     auth.signOut();
+    dispatch(logout());
   };
 
   return (

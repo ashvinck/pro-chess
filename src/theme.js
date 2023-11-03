@@ -25,5 +25,12 @@ export const customizations = () => ({
         },
       },
     },
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#181818',
+        },
+      },
+    },
   },
 });
