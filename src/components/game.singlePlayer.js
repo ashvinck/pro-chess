@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Chess from 'chess.js';
 import { Chessboard } from 'react-chessboard';
-import Box from '@mui/material/Box';
+import { useTheme } from '@emotion/react';
 import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SaveIcon from '@mui/icons-material/Save';
 import ListIcon from '@mui/icons-material/List';
@@ -12,14 +14,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import Confetti from 'react-confetti';
 import { v4 as uuidv4 } from 'uuid';
 import Engine from '../utilities/stockfishEngine';
+import { useSaveGameProgressMutation } from '../features/gameData/gameApiSlice';
+import { selectGameProgress } from '../features/gameData/gameDataSlice';
 import WinnerModal from './winnerModal';
 import GameLevel from './gameLevel';
 import GameReset from './gameReset';
-import { useTheme } from '@emotion/react';
-import { useSaveGameProgressMutation } from '../features/gameData/gameApiSlice';
 import SavedGameList from './savedGameList';
-import { useSelector } from 'react-redux';
-import { selectGameProgress } from '../features/gameData/gameDataSlice';
 
 // Styled IconButton
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
@@ -35,7 +35,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 const SinglePlayerGame = () => {
   // Mutation hook for saving game data to api (rtk query)
-  const [saveGameProgress, { isLoading }] = useSaveGameProgressMutation();
+  const [saveGameProgress] = useSaveGameProgressMutation();
 
   const restoreFen = useSelector(selectGameProgress);
 
@@ -53,6 +53,10 @@ const SinglePlayerGame = () => {
   const [winner, setWinner] = useState(null);
   const [open, setOpen] = useState(false);
   const [openList, setOpenList] = useState(false);
+
+  const [activeSquare, setActiveSquare] = useState('');
+  const BgImage = `${process.env.PUBLIC_URL}/Chesspieces/wood-pattern.png`;
+
   // Passing the current game positions to get the next game position from Stockfish
   function findBestMove() {
     try {
@@ -167,6 +171,50 @@ const SinglePlayerGame = () => {
     setOpenList((prevState) => !prevState);
   };
 
+  // 3d Pieces of the chess board
+  const threeDPieces = useMemo(() => {
+    const pieces = [
+      { piece: 'wP', pieceHeight: 1 },
+      { piece: 'wN', pieceHeight: 1.2 },
+      { piece: 'wB', pieceHeight: 1.2 },
+      { piece: 'wR', pieceHeight: 1.2 },
+      { piece: 'wQ', pieceHeight: 1.5 },
+      { piece: 'wK', pieceHeight: 1.6 },
+      { piece: 'bP', pieceHeight: 1 },
+      { piece: 'bN', pieceHeight: 1.2 },
+      { piece: 'bB', pieceHeight: 1.2 },
+      { piece: 'bR', pieceHeight: 1.2 },
+      { piece: 'bQ', pieceHeight: 1.5 },
+      { piece: 'bK', pieceHeight: 1.6 },
+    ];
+
+    const pieceComponents = {};
+    pieces.forEach(({ piece, pieceHeight }) => {
+      pieceComponents[piece] = ({ squareWidth, square }) => (
+        <div
+          style={{
+            width: squareWidth,
+            height: squareWidth,
+            position: 'relative',
+            pointerEvents: 'none',
+          }}
+        >
+          <img
+            src={`${process.env.PUBLIC_URL}/Chesspieces/${piece}.webp`}
+            width={squareWidth}
+            height={pieceHeight * squareWidth}
+            style={{
+              position: 'absolute',
+              bottom: `${0.2 * squareWidth}px`,
+              objectFit: piece[1] === 'K' ? 'contain' : 'cover',
+            }}
+          />
+        </div>
+      );
+    });
+    return pieceComponents;
+  }, []);
+
   // update gamePosition when Redux updates restoreFen
   useEffect(() => {
     if (restoreFen) {
@@ -200,6 +248,50 @@ const SinglePlayerGame = () => {
           id='PlayVsStockfish'
           position={gamePosition}
           onPieceDrop={onDrop}
+          customBoardStyle={{
+            transform: 'rotateX(32.5deg)',
+            transformOrigin: 'center',
+            border: '16px solid #b8836f',
+            borderStyle: 'outset',
+            borderRightColor: ' #b27c67',
+            borderRadius: '4px',
+            boxShadow: 'rgba(0, 0, 0, 0.5) 2px 24px 24px 8px',
+            borderRightWidth: '2px',
+            borderLeftWidth: '2px',
+            borderTopWidth: '0px',
+            borderBottomWidth: '16px',
+            borderTopLeftRadius: '4px',
+            borderTopRightRadius: '4px',
+            padding: '2px',
+            width: '101%',
+            height: '100%',
+            boxSizing: 'border-box',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: '#e0c094',
+            backgroundImage: `url(${BgImage})`,
+            backgroundSize: 'cover',
+          }}
+          customPieces={threeDPieces}
+          customLightSquareStyle={{
+            backgroundColor: '#e0c094',
+            backgroundImage: `url(${BgImage})`,
+            backgroundSize: 'cover',
+          }}
+          customDarkSquareStyle={{
+            backgroundColor: '#865745',
+            backgroundImage: `url(${BgImage})`,
+            backgroundSize: 'cover',
+          }}
+          animationDuration={500}
+          customSquareStyles={{
+            [activeSquare]: {
+              boxShadow: 'inset 0 0 1px 6px rgba(255,255,255,0.75)',
+            },
+          }}
+          onMouseOverSquare={(sq) => setActiveSquare(sq)}
+          onMouseOutSquare={(sq) => setActiveSquare('')}
         />
       </Box>
 

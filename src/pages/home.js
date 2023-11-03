@@ -69,7 +69,7 @@ const Home = () => {
               Chess Engine!
             </StyledTypography>
             <Hidden mdDown>
-              <Link to='/play'>
+              <Link to='/auth/user'>
                 <StyledButton
                   variant='contained'
                   color='secondary'
@@ -87,7 +87,7 @@ const Home = () => {
           </ImageBox>
           <Box sx={{ textAlign: 'center' }}>
             <Hidden mdUp>
-              <Link to='/play'>
+              <Link to='/auth/user'>
                 <StyledButton variant='contained' color='secondary'>
                   Play Now
                 </StyledButton>

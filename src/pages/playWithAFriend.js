@@ -1,5 +1,4 @@
 import React from 'react';
-import GameContainer from '../components/gameContainer';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
 import Template from '../components/template';

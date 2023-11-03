@@ -1,18 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { selectuser } from '../../features/gameData/gameDataSlice';
+import { selectUser } from '../../features/auth/authSlice';
 
 /**
- * using rtk query
- * API Setup
+ * Adding user email to be sent in the header to identify the user
  *  */
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://pro-chess-backend.vercel.app',
     prepareHeaders: (headers, { getState }) => {
-      const user = selectuser(getState());
-      if (user) {
-        headers.set('Authorization', `Bearer ${user}`);
+      const user = selectUser(getState());
+      const userEmail = user.email;
+      if (userEmail) {
+        headers.set('Authorization', `Bearer ${userEmail}`);
       }
       return headers;
     },
