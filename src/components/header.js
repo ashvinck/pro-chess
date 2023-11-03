@@ -108,7 +108,7 @@ const Header = () => {
               <StyledBox>
                 {/* -------- DisplayName and Avatar -------- */}
                 <StyledPaper>
-                  <StyledTypography>Ashvin C K</StyledTypography>
+                  <StyledTypography>{user.displayName}</StyledTypography>
                   <Avatar
                     alt='user'
                     src={user.userPic}
