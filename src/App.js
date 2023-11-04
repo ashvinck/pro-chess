@@ -11,8 +11,8 @@ import './App.css';
 import { customizations } from './theme';
 import GameRoutes from './Routes/Routes';
 import { auth } from './utilities/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, selectUser } from './features/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { login, logout } from './features/auth/authSlice';
 
 const StyledPaper = styled(Paper)(() => ({
   minHeight: '100vh',
@@ -24,12 +24,13 @@ function App() {
   let theme = createTheme(customizations());
   theme = responsiveFontSizes(theme);
 
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
+    // Set up an observer to listen for changes in the user's authentication state
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
+        // The user is authenticated, dispatch the user information to the store
         dispatch(
           login({
             displayName: authUser.displayName,
@@ -38,16 +39,20 @@ function App() {
           })
         );
       } else {
+        // The user is not authenticated, dispatch logout action
         dispatch(logout());
       }
     });
+
+    // Clean up the observer when the component unmounts
+    return () => unsubscribe();
   }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <StyledPaper elevation={0}>
-        <GameRoutes user={user} />
+        <GameRoutes />
       </StyledPaper>
     </ThemeProvider>
   );

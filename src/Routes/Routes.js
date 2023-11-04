@@ -1,45 +1,22 @@
 import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from '../pages/home';
 import Gameoptions from '../pages/gameOptions';
 import PlayWithComputer from '../pages/playWithComputer';
 import PlayWithAFriend from '../pages/playWithAFriend';
 import UserAuth from '../pages/userAuth';
+import PrivateRoutes from './privateRoutes';
 
-const GameRoutes = ({ user }) => {
-  // Adding a private route for preventing unauthorized access
-  const PrivateRoute = ({ children }) => {
-    return user ? children : <Navigate to='/auth/user' />;
-  };
-
+const GameRoutes = () => {
   return (
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='/auth/user' element={<UserAuth />} />
-      <Route
-        path='/play'
-        element={
-          <PrivateRoute>
-            <Gameoptions />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path='/play/computer'
-        element={
-          <PrivateRoute>
-            <PlayWithComputer />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path='/play/friend'
-        element={
-          <PrivateRoute>
-            <PlayWithAFriend />
-          </PrivateRoute>
-        }
-      />
+      <Route path='/play' element={<PrivateRoutes />}>
+        <Route index element={<Gameoptions />} />
+        <Route path='computer' element={<PlayWithComputer />} />
+        <Route path='friend' element={<PlayWithAFriend />} />
+      </Route>
     </Routes>
   );
 };

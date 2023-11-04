@@ -13,6 +13,7 @@ import Logo from '../assets/logo.svg';
 import { logout, selectUser } from '../features/auth/authSlice';
 import { LogoutOutlined } from '@mui/icons-material';
 import { auth } from '../utilities/firebase';
+import { Link } from 'react-router-dom';
 
 // Container for header
 const BoxContainer = styled(Box)(({ theme }) => ({
@@ -102,7 +103,9 @@ const Header = () => {
         <Toolbar disableGutters>
           <BoxContainer>
             <StyledBox>
-              <img src={Logo} alt='logo' height='60' width='60' />
+              <Link to='/'>
+                <img src={Logo} alt='logo' height='60' width='60' />
+              </Link>
               <span>Pro CHESS</span>
             </StyledBox>
             {user ? (
