@@ -10,7 +10,7 @@ Pro Chess is an interactive chess application that lets users to enhance their c
 
 - **Multiplayer Mode:** Challenge your friends or players from around the world in real-time multiplayer chess games. Pro Chess provides a seamless online gaming experience.
 
-- **User Profiles:** Keep track of your progress with user profiles. Restore your previous game data and play .
+- **User Profiles:** Keep track of your progress with user profiles. Restore your previous game data and play.
 
 - **Responsive Design:** Pro Chess is designed to work smoothly on both desktop and mobile devices, ensuring a seamless gaming experience on any platform.
 
@@ -40,7 +40,8 @@ To get started with Pro Chess, follow these steps:
 ## Technologies Used
 
 - **Frontend:** React, Redux, rtk Query, Material-UI,
-- **Backend:** Node.js, Express.js, MongoDB,
+- **Backend:** Node.js, Express.js, Firebase
+- **Database** MongoDB
 - **ChessEngine** Stockfish
 
 ## Contributing
