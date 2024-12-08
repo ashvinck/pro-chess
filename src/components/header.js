@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { LogoutOutlined } from '@mui/icons-material';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,9 +13,7 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Logo from '../assets/logo.svg';
 import { logout, selectUser } from '../features/auth/authSlice';
-import { LogoutOutlined } from '@mui/icons-material';
-import { auth } from '../utilities/firebase';
-import { Link } from 'react-router-dom';
+import { auth } from '../config/firebase';
 
 // Container for header
 const BoxContainer = styled(Box)(({ theme }) => ({

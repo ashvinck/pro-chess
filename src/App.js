@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   CssBaseline,
   Paper,
@@ -9,16 +10,18 @@ import {
 import styled from '@emotion/styled';
 import './App.css';
 import { customizations } from './theme';
-import GameRoutes from './Routes/Routes';
-import { auth } from './utilities/firebase';
-import { useDispatch } from 'react-redux';
+import { auth } from './config/firebase';
 import { login, logout } from './features/auth/authSlice';
+import { logoutSocket } from './features/multiplayer/socketSlice';
+import { Outlet } from 'react-router-dom';
 
-const StyledPaper = styled(Paper)(() => ({
-  minHeight: '100vh',
-  minWidth: '100vw',
-  borderRadius: '0px',
-}));
+const StyledPaper = React.memo(
+  styled(Paper)(() => ({
+    minHeight: '100vh',
+    minWidth: '100vw',
+    borderRadius: '0px',
+  }))
+);
 
 function App() {
   let theme = createTheme(customizations());
@@ -39,8 +42,9 @@ function App() {
           })
         );
       } else {
-        // The user is not authenticated, dispatch logout action
+        // The user is not authenticated, dispatch logout and socket off action
         dispatch(logout());
+        dispatch(logoutSocket());
       }
     });
 
@@ -52,7 +56,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <StyledPaper elevation={0}>
-        <GameRoutes />
+        <Outlet />
       </StyledPaper>
     </ThemeProvider>
   );

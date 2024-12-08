@@ -40,11 +40,11 @@ To get started with Pro Chess, follow these steps:
 ## Technologies Used
 
 - **Frontend:** React, Redux, rtk Query, Material-UI,
-- **Backend:** Node.js, Express.js, MongoDB,
+- **Backend:** Node.js, Express.js, MongoDB, Socket.io
 - **ChessEngine** Stockfish
 
 ## Contributing
-  
+
 I welcome contributions to Pro Chess! Feel free to submit bug reports, feature requests, or pull requests on our GitHub repository.
 
 ## License

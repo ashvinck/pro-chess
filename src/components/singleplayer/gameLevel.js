@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTheme } from '@emotion/react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import SpeedDial from '@mui/material/SpeedDial';
@@ -7,7 +8,6 @@ import SignalCellularAlt1BarIcon from '@mui/icons-material/SignalCellularAlt1Bar
 import SignalCellularAlt2BarIcon from '@mui/icons-material/SignalCellularAlt2Bar';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import { useTheme } from '@emotion/react';
 
 const GameLevel = ({ setGameHardnessLevel }) => {
   const theme = useTheme();

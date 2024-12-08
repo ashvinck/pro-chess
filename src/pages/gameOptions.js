@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import OptionsCard from '../components/optionsCard';
+import OptionsCard from '../components/singleplayer/optionsCard';
 import Template from '../components/template';
 import ComputerImg from '../assets/computer..svg';
 import PlayImg from '../assets/playwhite.svg';
@@ -21,13 +21,15 @@ const Options = [
   },
 ];
 
-const BoxWrapper = styled(Box)(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '100%',
-}));
+const BoxWrapper = React.memo(
+  styled(Box)(() => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+  }))
+);
 
 const Gameoptions = () => {
   return (

@@ -32,5 +32,12 @@ export const customizations = () => ({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          background: '#181818',
+        },
+      },
+    },
   },
 });

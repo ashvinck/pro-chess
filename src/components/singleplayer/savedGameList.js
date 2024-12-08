@@ -14,8 +14,8 @@ import {
   IconButton,
   DialogActions,
 } from '@mui/material';
-import { useLoadGameProgressQuery } from '../features/gameData/gameApiSlice';
-import { setGameProgress } from '../features/gameData/gameDataSlice';
+import { useLoadGameProgressQuery } from '../../features/gameData/gameApiSlice';
+import { setGameProgress } from '../../features/gameData/gameDataSlice';
 
 // Styled Dialog
 const StyledDialog = styled(Dialog)(({ theme }) => ({
@@ -60,8 +60,7 @@ const StyledListItemText = styled(ListItemText)(({ theme }) => ({
 
 const SavedGameList = () => {
   // Fetching data from api
-  const { data, isLoading, isSuccess, isError, error } =
-    useLoadGameProgressQuery();
+  const { data, isSuccess, isError } = useLoadGameProgressQuery();
 
   const [open, setOpen] = useState(true);
   const dispatch = useDispatch();

@@ -1,7 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Chess from 'chess.js';
+import { Chess } from 'chess.js';
 import { Chessboard } from 'react-chessboard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Confetti from 'react-confetti';
+import { v4 as uuidv4 } from 'uuid';
 import { useTheme } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -9,19 +13,14 @@ import IconButton from '@mui/material/IconButton';
 import SaveIcon from '@mui/icons-material/Save';
 import ListIcon from '@mui/icons-material/List';
 import Tooltip from '@mui/material/Tooltip';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Confetti from 'react-confetti';
-import { v4 as uuidv4 } from 'uuid';
-import Engine from '../utilities/stockfishEngine';
-import { useSaveGameProgressMutation } from '../features/gameData/gameApiSlice';
-import { selectGameProgress } from '../features/gameData/gameDataSlice';
-import WinnerModal from './winnerModal';
+import Engine from '../../utilities/stockfishEngine';
+import { useSaveGameProgressMutation } from '../../features/gameData/gameApiSlice';
+import { selectGameProgress } from '../../features/gameData/gameDataSlice';
+import WinnerModal from '../winnerModal';
 import GameLevel from './gameLevel';
 import GameReset from './gameReset';
 import SavedGameList from './savedGameList';
 
-// Styled IconButton
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
   fontFamily: 'Poppins, sans-serif',
   fontWeight: 'bold',
@@ -30,6 +29,16 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.primary.main,
   '&:hover': {
     backgroundColor: theme.palette.secondary.light,
+  },
+}));
+
+const ChessBoardWrapper = styled(Box)(({ theme }) => ({
+  width: '80vw',
+  maxWidth: '70vh',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  [theme.breakpoints.between('md', 'lg')]: {
+    padding: '20px',
   },
 }));
 
@@ -53,43 +62,70 @@ const SinglePlayerGame = () => {
   const [winner, setWinner] = useState(null);
   const [open, setOpen] = useState(false);
   const [openList, setOpenList] = useState(false);
+  const [lastToast, setLastToast] = useState('');
 
   const [activeSquare, setActiveSquare] = useState('');
   const BgImage = `${process.env.PUBLIC_URL}/Chesspieces/wood-pattern.png`;
 
+  // Function to show controlled toast notifications
+  const showToast = (type, message) => {
+    if (lastToast !== type) {
+      toast.info(message);
+      setLastToast(type); // Update the last toast type
+    }
+  };
+
+  const checkGameStatus = () => {
+    if (game.in_checkmate()) {
+      const winningPlayer = game.turn() === 'w' ? 'Black' : 'White';
+      setWinner(winningPlayer);
+      setOpen(true);
+      showToast('checkmate', `${winningPlayer} wins by checkmate!`);
+      return; // Exit after checkmate
+    }
+
+    if (game.in_check()) {
+      showToast('check', 'Check!');
+    }
+
+    if (game.in_draw()) {
+      showToast('draw', 'It is a draw! Get them next time, chief!');
+      return;
+    }
+
+    if (game.in_stalemate()) {
+      showToast('stalemate', 'It is a stalemate! Peace!');
+      return;
+    }
+
+    if (game.game_over()) {
+      showToast('gameOver', 'Game over!');
+      return;
+    }
+  };
   // Passing the current game positions to get the next game position from Stockfish
   function findBestMove() {
     try {
       engine.evaluatePosition(game.fen(), gameHardnessLevel);
       engine.onMessage(({ bestMove }) => {
         if (bestMove) {
-          game.move({
+          const move = game.move({
             from: bestMove.substring(0, 2),
             to: bestMove.substring(2, 4),
             promotion: bestMove.substring(4, 5),
           });
 
+          if (move === null) {
+            toast.error('Invalid move, Please try again');
+            return false;
+          }
+
           setGamePosition(game.fen());
-
-          // Check for check
-          if (game.in_check()) {
-            console.log('check');
-            toast.info('Check!');
-          }
-
-          if (game.in_checkmate()) {
-            const winningPlayer = game.turn() === 'w' ? 'Black' : 'White';
-            setWinner(winningPlayer);
-            setOpen(true);
-          } else if (game.in_draw()) {
-            toast.info('It is a draw! Get them next time, chief!');
-          } else if (game.game_over()) {
-            toast.info('Game over!');
-          }
+          checkGameStatus();
         }
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -101,25 +137,14 @@ const SinglePlayerGame = () => {
         to: targetSquare,
         promotion: piece[1].toLowerCase() ?? 'q',
       });
-      setGamePosition(game.fen());
 
       if (move === null) {
         toast.error('Invalid move, Please try again');
         return false;
       }
-      if (game.in_check()) {
-        toast.info('Check!');
-      }
+      setGamePosition(game.fen());
 
-      if (game.in_checkmate()) {
-        const winningPlayer = game.turn() === 'w' ? 'Black' : 'White';
-        setWinner(winningPlayer);
-        setOpen(true);
-      } else if (game.in_draw()) {
-        toast.info('It is a draw! Get them next time, chief!');
-      } else if (game.game_over()) {
-        toast.info('Game over!');
-      }
+      checkGameStatus();
 
       // Game Turn changes to stockfish
       findBestMove();
@@ -208,6 +233,7 @@ const SinglePlayerGame = () => {
               bottom: `${0.2 * squareWidth}px`,
               objectFit: piece[1] === 'K' ? 'contain' : 'cover',
             }}
+            alt={`${piece}`}
           />
         </div>
       );
@@ -236,14 +262,7 @@ const SinglePlayerGame = () => {
         />
       </Box>
 
-      <Box
-        sx={{
-          width: '80vw',
-          maxWidth: '70vh',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-      >
+      <ChessBoardWrapper>
         <Chessboard
           id='PlayVsStockfish'
           position={gamePosition}
@@ -293,7 +312,7 @@ const SinglePlayerGame = () => {
           onMouseOverSquare={(sq) => setActiveSquare(sq)}
           onMouseOutSquare={(sq) => setActiveSquare('')}
         />
-      </Box>
+      </ChessBoardWrapper>
 
       {winner && (
         <Confetti

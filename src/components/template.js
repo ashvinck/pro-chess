@@ -33,7 +33,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: '10px',
   padding: theme.spacing(6),
   background: 'rgba(47, 47, 47, 0.50)',
-  backgroundRaius: '16px',
+  backgroundRadius: '16px',
   boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
   backdropFilter: 'blur(5.5px)',
   WebkitBackdropFilter: 'blur(5.5px)',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import styled from '@emotion/styled';
@@ -20,43 +20,49 @@ import {
   signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
-import { auth, GoogleProvider, GithubProvider } from '../utilities/firebase';
+import { auth, GoogleProvider, GithubProvider } from '../config/firebase';
 import TextFormField from '../components/textField';
 import Template from '../components/template';
 
 /**
  * UI Component Styles
  */
-const StyledButton = styled(Button)(({ theme }) => ({
-  fontFamily: 'Poppins, sans-serif',
-  fontWeight: 'bold',
-  marginTop: '10px',
-  marginBottom: '10px',
-  backgroundColor: theme.palette.secondary.dark,
-  color: theme.palette.primary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.secondary.light,
-  },
-}));
+const StyledButton = React.memo(
+  styled(Button)(({ theme }) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 'bold',
+    marginTop: '10px',
+    marginBottom: '10px',
+    backgroundColor: theme.palette.secondary.dark,
+    color: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  }))
+);
 
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: 'Poppins, sans-serif',
-  fontWeight: 'bold',
-  color: theme.palette.secondary.light,
-  textAlign: 'center',
-  marginBottom: '10px',
-}));
+const StyledTypography = React.memo(
+  styled(Typography)(({ theme }) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 'bold',
+    color: theme.palette.secondary.light,
+    textAlign: 'center',
+    marginBottom: '10px',
+  }))
+);
 
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  fontFamily: 'Poppins, sans-serif',
-  fontWeight: 'bold',
-  margin: theme.spacing(2),
-  backgroundColor: theme.palette.secondary.dark,
-  color: theme.palette.primary.main,
-  '&:hover': {
-    backgroundColor: theme.palette.secondary.light,
-  },
-}));
+const StyledIconButton = React.memo(
+  styled(IconButton)(({ theme }) => ({
+    fontFamily: 'Poppins, sans-serif',
+    fontWeight: 'bold',
+    margin: theme.spacing(2),
+    backgroundColor: theme.palette.secondary.dark,
+    color: theme.palette.primary.main,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.light,
+    },
+  }))
+);
 
 /**
  * Validation Schemas
@@ -312,6 +318,9 @@ const UserAuth = () => {
   // For toggling between loading states
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/play';
 
   /**
    * Authorization functions
@@ -322,7 +331,7 @@ const UserAuth = () => {
     createUserWithEmailAndPassword(auth, email, password, username)
       .then((res) => {
         updateProfile(res.user, { displayName: username }).then(() => {
-          navigate('/play');
+          navigate(from, { replace: true });
           setLoading(false);
         });
       })
@@ -336,7 +345,7 @@ const UserAuth = () => {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        navigate('/play');
+        navigate(from, { replace: true });
         setLoading(false);
       })
       .catch((error) => {
@@ -367,7 +376,7 @@ const UserAuth = () => {
       .then((res) => {
         console.log(res);
         setLoading(false);
-        navigate('/play');
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         setLoading(false);
@@ -383,7 +392,7 @@ const UserAuth = () => {
       .then((res) => {
         console.log(res);
         setLoading(false);
-        navigate('/play');
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         setLoading(false);
