@@ -133,7 +133,7 @@ const JoinGame = () => {
       setPlayerLeft(true);
       navigate('/play');
     });
-  });
+  }, [socket]);
 
   const onRoomIdInputChanged = (e) => {
     setEnteredRoomId(e.target.value);

@@ -87,8 +87,11 @@ const MultiplayerGame = ({ boardOrientation }) => {
         });
       });
 
+      console.log('This is inside useEffects');
+
       mountAfterPlayerLeftEvent(socket, (data) => {
         // dispatch(logoutSocket());
+        console.log('After Player Left Event ');
         setPlayerLeft(true);
         navigate('/play');
       });

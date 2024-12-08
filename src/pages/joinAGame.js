@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useBlocker, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { styled } from '@mui/system';
@@ -12,11 +12,13 @@ import {
   selectSocket,
 } from '../features/multiplayer/socketSlice';
 import {
+  mountAfterPlayerLeftEvent,
   mountOnConfirmStartMutliplayerGame,
   mountOpponentJoinedGame,
   unMountOnConfirmStartMutliplayerGame,
 } from '../utilities/socket.io';
 import InitializeSocket from '../components/multiplayer/initializeGame';
+import QuitGamePrompt from '../components/quitGamePrompt';
 
 // Styled Dialog
 const StyledDialog = React.memo(
@@ -56,6 +58,7 @@ const JoinAGame = () => {
   const { displayName } = user;
   const [startGame, setStartGame] = useState(null);
   const [error, setError] = useState(null);
+  const [playerLeft, setPlayerLeft] = useState(false);
 
   useEffect(() => {
     if (!socket) {
@@ -95,6 +98,15 @@ const JoinAGame = () => {
     [dispatch]
   );
 
+  const blocker = useBlocker(({ currentLocation, nextLocation }) => {
+    const navigateToGamePlay =
+      nextLocation.pathname === '/play/friend/start/game';
+    if (navigateToGamePlay) {
+      return false;
+    }
+    return true;
+  });
+
   useEffect(() => {
     if (socket) {
       mountOnConfirmStartMutliplayerGame(socket, handleStartGame);
@@ -110,10 +122,24 @@ const JoinAGame = () => {
     }
   }, [startGame, navigate]);
 
+  useEffect(() => {
+    mountAfterPlayerLeftEvent(socket, (data) => {
+      // dispatch(logoutSocket());
+      setPlayerLeft(true);
+      navigate('/play');
+    });
+  }, [socket]);
+
   return (
     <>
       <ToastContainer theme='dark' />
-      {error ? (
+      {blocker.state === 'blocked' ? (
+        <QuitGamePrompt
+          blocker={blocker}
+          socket={socket}
+          playerLeft={playerLeft}
+        />
+      ) : error ? (
         <StyledDialog open={true}>
           <StyledLinkBox>
             <Typography sx={{ p: 2 }}>{error}</Typography>

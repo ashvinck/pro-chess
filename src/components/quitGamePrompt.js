@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { styled } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { logoutSocket } from '../features/multiplayer/socketSlice';
+import {
+  logoutSocket,
+  selectRoomId,
+} from '../features/multiplayer/socketSlice';
 import { mountPlayerLeftEvent } from '../utilities/socket.io';
 import { useNavigate } from 'react-router-dom';
 
@@ -49,12 +52,13 @@ const StyledButton = React.memo(
 
 const QuitGamePrompt = ({ blocker, socket, playerLeft }) => {
   const [open, setOpen] = useState(true);
+  const roomId = useSelector(selectRoomId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleOnProceed = () => {
     blocker.proceed();
-    mountPlayerLeftEvent(socket);
+    mountPlayerLeftEvent(socket, roomId);
     dispatch(logoutSocket());
     navigate('/play');
   };

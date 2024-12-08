@@ -147,9 +147,9 @@ const unMountOnFlashMessageReceived = (socket) => {
   }
 };
 
-const mountPlayerLeftEvent = (socket) => {
+const mountPlayerLeftEvent = (socket, roomId) => {
   try {
-    socket.emit(GameEventEnum.DISCONNECT_EVENT);
+    socket.emit(GameEventEnum.DISCONNECT_EVENT, roomId);
     console.log('The player left is emitted');
   } catch (error) {
     console.error('error in mounting player left event: ', error.message);
