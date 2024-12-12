@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
-import chessBoard from '../assets/chessboard.jpeg';
+import chessBoard from '../assets/chessboard.webp';
 import Template from '../components/template';
 
 // Grid Container
