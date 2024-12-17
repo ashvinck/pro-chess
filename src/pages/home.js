@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Hidden from '@mui/material/Hidden';
 import chessBoard from '../assets/chessboard.webp';
 import Template from '../components/template';
+import { API } from '../config/API';
 
 // Grid Container
 const StyledGrid = styled(Grid)(() => ({
@@ -56,6 +57,39 @@ const ImageBox = styled(Box)(({ theme }) => ({
 }));
 
 const Home = () => {
+  /**
+   * This is a workaround for render deployment ( API servers no application purpose)
+   * Render spools up really slow from cold start
+   * So, I am calling the home api when user clicks this button cause this makes sure that
+   * server is up and running by the time auth is completed by the user.
+   */
+  const handleCallHomeApi = async () => {
+    try {
+      const response = await fetch(`${API}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        // Handle HTTP errors
+        throw new Error(
+          `HTTP Error: ${response.status} ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      // Handle the fetched data if needed
+      // For example, updating state or redirecting the user based on response
+    } catch (error) {
+      console.error('Error calling home API:', error);
+      // Optionally display an error message to the user
+    }
+  };
+
   return (
     <Template>
       <StyledGrid container spacing={2}>
@@ -74,6 +108,7 @@ const Home = () => {
                   variant='contained'
                   color='secondary'
                   size='large'
+                  onClick={handleCallHomeApi}
                 >
                   Play Now
                 </StyledButton>
