@@ -100,7 +100,8 @@ const Home = () => {
             </StyledHeading>
             <StyledTypography variant='subtitle2'>
               Enhance Your Chess Mastery: Challenge Stockfish, the Renowned
-              Chess Engine!
+              Chess Engine. Connect with your friends and improve your skills to
+              master chess.
             </StyledTypography>
             <Hidden mdDown>
               <Link to='/play'>
